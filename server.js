@@ -1,7 +1,8 @@
+// var orm = require("./config/orm.js");
+
 var express = require("express");
 var exphbs = require("express-handlebars");
 var mysql = require("mysql");
-
 var app = express();
 
 // Set the port of our application
@@ -12,6 +13,9 @@ var PORT = process.env.PORT || 8080;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+// Serve static content for the app from the "public" directory in the application directory.
+app.use(express.static("public"));
+
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
@@ -20,7 +24,7 @@ var connection = mysql.createConnection({
   port: 3306,
   user: "root",
   password: "root",
-  database: "day_planner_db"
+  database: "burgers_db"
 });
 
 connection.connect(function(err) {
@@ -28,10 +32,9 @@ connection.connect(function(err) {
     console.error("error connecting: " + err.stack);
     return;
   }
-
   console.log("connected as id " + connection.threadId);
 });
-
+// var nonDevouredPlans = plans.filter(function(plan) { return plan.devoured === true })
 // Use Handlebars to render the main index.html page with the plans in it.
 app.get("/", function(req, res) {
   connection.query("SELECT * FROM plans;", function(err, data) {
@@ -58,7 +61,8 @@ app.post("/api/plans", function(req, res) {
 
 // Update a plan
 app.put("/api/plans/:id", function(req, res) {
-  connection.query("UPDATE plans SET plan = ? WHERE id = ?", [req.body.plan, req.params.id], function(err, result) {
+  console.log("we're here")
+  connection.query("UPDATE plans SET devoured = ? WHERE id = ?", [true, req.params.id], function(err, result) {
     if (err) {
       // If an error occurred, send a generic server failure
       return res.status(500).end();
@@ -67,26 +71,17 @@ app.put("/api/plans/:id", function(req, res) {
       // If no rows were changed, then the ID must not exist, so 404
       return res.status(404).end();
     }
-    res.status(200).end();
-
-  });
-});
-
-// Delete a plan
-app.delete("/api/plans/:id", function(req, res) {
-  connection.query("DELETE FROM plans WHERE id = ?", [req.params.id], function(err, result) {
+    connection.query("SELECT * FROM plans", function (err, result) {
     if (err) {
-      // If an error occurred, send a generic server failure
       return res.status(500).end();
+  
     }
-    else if (result.affectedRows === 0) {
-      // If no rows were changed, then the ID must not exist, so 404
-      return res.status(404).end();
-    }
-    res.status(200).end();
+    res.render("index", { plans: result });
+    })
 
   });
 });
+
 
 // Start our server so that it can begin listening to client requests.
 app.listen(PORT, function() {
