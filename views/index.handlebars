@@ -14,7 +14,9 @@
     <div class="col-md-4 text-center">
       <form id="createplan" class="button-size">
         <textarea type="text" name="plan" class="widefield"></textarea><br>
-        <button type="submit" class="mt-1">Save Plan!</button>
+        {{!-- <button type="submit" class="mt-1">Submit</button> --}}
+        <button type="submit" class="btn btn-dark mt-2 mb-3">Submit</button>
+
       </form>
     </div>
 
@@ -25,11 +27,12 @@
       {{else}}
       <div class="card text-center mb-3">
         <div class="card-body">
-                    {{!-- <p class="card-text">{{this.id}}. {{this.plan}}</p> --}}
+          {{!-- <p class="card-text">{{this.id}}. {{this.plan}}</p> --}}
 
           <p class="card-text">{{this.plan}}</p>
-          <button data-planid="{{this.id}}" class="delplan">Delete Plan!</button>
-          {{!-- <button type="button" class="btn btn-dark btn-sm">Devour</button> --}}
+          {{!-- <button data-planid="{{this.id}}" class="delplan">Devour</button> --}}
+          <button data-planid="{{this.id}}" type="button" class="btn btn-dark delplan">Devour</button>
+
         </div>
       </div>
       {{/if}}
@@ -42,7 +45,7 @@
       {{#if devoured}}
       <div class="card text-center mb-3">
         <div class="card-body">
-                    {{!-- <p class="card-text">{{this.id}}. {{this.plan}}</p> --}}
+          {{!-- <p class="card-text">{{this.id}}. {{this.plan}}</p> --}}
 
           <p class="card-text">{{this.plan}}</p>
           {{!-- <button data-planid="{{this.id}}" class="delplan">Delete Plan!</button> --}}
@@ -58,42 +61,8 @@
 
 
   <div class="alert alert-light mt-5 mb-5 pt-5 text-center small" role="alert">
-    Photo by <a href="https://unsplash.com/@aditya1702">Aditya Vyas</a> on <a href="https://unsplash.com/">Unsplash</a>.
+    Photo courtesy of <a href="https://unsplash.com/">Unsplash</a>.
   </div>
-
-
-  {{!-- <h1>Day Planner</h1>
-
-  <ul>
-    {{#each plans}}
-    <li>
-      <p>
-        {{this.id}}. {{this.plan}}
-
-        <button data-planid="{{this.id}}" class="delplan">Delete Plan!</button>
-      </p>
-    </li>
-    {{/each}}
-  </ul>
-
-  <h2>Create a Plan</h2>
-  <form id="createplan" class="button-size">
-    <textarea type="text" name="plan"></textarea>
-    <button type="submit">Save Plan!</button>
-  </form>
-
-  <h2>Update a Plan</h2>
-  <form id="updateplan" class="button-size">
-    <select name="id">
-      {{#each plans}}
-      <option value="{{this.id}}">{{this.plan}}</option>
-      {{/each}}
-    </select>
-    <textarea type="text" name="plan" placeholder="plan"></textarea>
-    <button type="submit">Update Plan!</button>
-  </form> --}}
-
-
 
 
   <script type="text/javascript">
