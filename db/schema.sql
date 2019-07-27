@@ -28,4 +28,4 @@ CREATE TABLE plans (
 );
 
 -- Insert a set of records.
-INSERT INTO plans (plan) VALUES ('Plan to fight a ninja.');
+INSERT INTO plans (plan) VALUES ('Plain');
