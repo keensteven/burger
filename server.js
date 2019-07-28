@@ -1,9 +1,11 @@
 // var orm = require("./config/orm.js");
+var mysql = require("mysql");
 
 var express = require("express");
 var exphbs = require("express-handlebars");
-var mysql = require("mysql");
 var app = express();
+var methodOverride = require('method-override');
+var bodyParser = require('body-parser')
 
 // Set the port of our application
 // process.env.PORT lets the port be set by Heroku
@@ -16,16 +18,28 @@ app.use(express.json());
 // Serve static content for the app from the "public" directory in the application directory.
 app.use(express.static("public"));
 
+app.use(bodyParser.urlencoded({
+  extended: false
+}))
+
+app.use(methodOverride('_method'));
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
-var connection = mysql.createConnection({
-  host: "localhost",
-  port: 3306,
-  user: "root",
-  password: "root",
-  database: "burgers_db"
-});
+var connection; 
+
+if (process.env.JAWSDB_URL) {
+  connection = mysql.createConnection(process.env.JAWSDB_URL);
+  
+} else {
+  connection = mysql.createConnection({
+    host: "localhost",
+    port: 3306,
+    user: "root",
+    password: "root",
+    database: "burgers_db"
+  });
+};
 
 connection.connect(function(err) {
   if (err) {
@@ -34,7 +48,7 @@ connection.connect(function(err) {
   }
   console.log("connected as id " + connection.threadId);
 });
-// var nonDevouredPlans = plans.filter(function(plan) { return plan.devoured === true })
+
 // Use Handlebars to render the main index.html page with the plans in it.
 app.get("/", function(req, res) {
   connection.query("SELECT * FROM plans;", function(err, data) {
