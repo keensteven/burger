@@ -2,9 +2,9 @@
 
 
 <div class="jumbotron jumbotron-fluid text-center mb-5">
-  <div class="container pr-5 pl-5 pt-3 pb-3">
+  <div class="container pr-5 pl-5 pt-0 pb-0">
     <h1 class="display-4">Eat Da Burger</h1>
-    <p class="lead">Enter a burger you want to eat and click the submit button.</p>
+    <p class="lead">Enter a burger you'd like to eat and click the submit button.</p>
   </div>
 </div>
 <div class="container text-center pt-1 pr-5 pb-5 pl-5">
@@ -12,10 +12,10 @@
   <div class="row">
 
     <div class="col-md-4 text-center">
-      <form id="createplan" class="button-size">
-        <input class="form-control" name="plan" type="text" placeholder="Enter a burger here">
+      <form id="createburger" class="button-size">
+        <input class="form-control" name="burger" type="text" placeholder="Enter a burger here">
 
-        {{!-- <textarea type="text" name="plan" class="widefield"></textarea><br> --}}
+        {{!-- <textarea type="text" name="burger" class="widefield"></textarea><br> --}}
         {{!-- <button type="submit" class="mt-1">Submit</button> --}}
         <button type="submit" class="btn btn-dark mt-2 mb-3">Submit</button>
 
@@ -24,16 +24,16 @@
 
     <div class="col-md-4">
 
-      {{#each plans}}
+      {{#each burgers}}
       {{#if devoured}}
       {{else}}
       <div class="card text-center mb-3">
         <div class="card-body">
           {{!-- <p class="card-text">{{this.id}}. {{this.plan}}</p> --}}
 
-          <p class="card-text">{{this.plan}}</p>
+          <p class="card-text">{{this.burger}}</p>
           {{!-- <button data-planid="{{this.id}}" class="delplan">Devour</button> --}}
-          <button data-planid="{{this.id}}" type="button" class="btn btn-dark delplan">Devour</button>
+          <button data-burgerid="{{this.id}}" type="button" class="btn btn-dark delburger">Devour</button>
 
         </div>
       </div>
@@ -43,15 +43,13 @@
 
 
     <div class="col-md-4">
-      {{#each plans}}
+      {{#each burgers}}
       {{#if devoured}}
       <div class="card text-center mb-3">
         <div class="card-body">
-          {{!-- <p class="card-text">{{this.id}}. {{this.plan}}</p> --}}
 
-          <p class="card-text">{{this.plan}}</p>
-          {{!-- <button data-planid="{{this.id}}" class="delplan">Delete Plan!</button> --}}
-          {{!-- <button type="button" class="btn btn-dark btn-sm">Devour</button> --}}
+          <p class="card-text">{{this.burger}}</p>
+
         </div>
       </div>
       {{else}}
@@ -68,13 +66,13 @@
 
 
   <script type="text/javascript">
-    $(".delplan").on("click", function (event) {
+    $(".delburger").on("click", function (event) {
       // Get the ID from the button.
       // This is shorthand for $(this).attr("data-planid")
-      var id = $(this).data("planid");
+      var id = $(this).data("burgerid");
 
       // Send the DELETE request.
-      $.ajax("/api/plans/" + id, {
+      $.ajax("/api/burgers/" + id, {
         type: "PUT"
       }).then(
         function () {
@@ -85,43 +83,43 @@
       );
     });
 
-    $("#createplan").on("submit", function (event) {
+    $("#createburger").on("submit", function (event) {
       // Make sure to preventDefault on a submit event.
       event.preventDefault();
 
       // [name=plan] will find an element with a "name" attribute equal to the string "plan"
-      var newPlan = {
-        plan: $("#createplan [name=plan]").val().trim()
+      var newBurger = {
+        burger: $("#createburger [name=burger]").val().trim()
       };
 
       // Send the POST request.
-      $.ajax("/api/plans", {
+      $.ajax("/api/burgers", {
         type: "POST",
-        data: newPlan
+        data: newBurger
       }).then(
         function () {
-          console.log("created new plan");
+          console.log("created new burger");
           // Reload the page to get the updated list
           location.reload();
         }
       );
     });
 
-    $("#updateplan").on("submit", function (event) {
+    $("#updateburger").on("submit", function (event) {
       // Make sure to preventDefault on a submit event.
       event.preventDefault();
 
       // Get the ID by finding an element with a "name" attribute equal to the string "id"
       var id = $("[name=id]").val().trim();
 
-      var updatedPlan = {
-        plan: $("#updateplan [name=plan]").val().trim()
+      var updatedBurger = {
+        burger: $("#updateburger [name=burger]").val().trim()
       };
 
       // Send the PUT request.
-      $.ajax("/api/plans/" + id, {
+      $.ajax("/api/burgers/" + id, {
         type: "PUT",
-        data: updatedPlan
+        data: updatedBurger
       }).then(
         function () {
           console.log("updated id ", id);

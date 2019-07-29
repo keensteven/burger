@@ -51,32 +51,32 @@ connection.connect(function(err) {
 
 // Use Handlebars to render the main index.html page with the plans in it.
 app.get("/", function(req, res) {
-  connection.query("SELECT * FROM plans;", function(err, data) {
+  connection.query("SELECT * FROM burgers;", function(err, data) {
     if (err) {
       return res.status(500).end();
     }
 
-    res.render("index", { plans: data });
+    res.render("index", { burgers: data });
   });
 });
 
-// Create a new plan
-app.post("/api/plans", function(req, res) {
-  connection.query("INSERT INTO plans (plan) VALUES (?)", [req.body.plan], function(err, result) {
+// Create a new burger
+app.post("/api/burgers", function(req, res) {
+  connection.query("INSERT INTO burgers (burger) VALUES (?)", [req.body.burger], function(err, result) {
     if (err) {
       return res.status(500).end();
     }
 
-    // Send back the ID of the new plan
+    // Send back the ID of the new burger
     res.json({ id: result.insertId });
     console.log({ id: result.insertId });
   });
 });
 
-// Update a plan
-app.put("/api/plans/:id", function(req, res) {
+// Update a burger
+app.put("/api/burgers/:id", function(req, res) {
   console.log("we're here")
-  connection.query("UPDATE plans SET devoured = ? WHERE id = ?", [true, req.params.id], function(err, result) {
+  connection.query("UPDATE burgers SET devoured = ? WHERE id = ?", [true, req.params.id], function(err, result) {
     if (err) {
       // If an error occurred, send a generic server failure
       return res.status(500).end();
@@ -85,12 +85,12 @@ app.put("/api/plans/:id", function(req, res) {
       // If no rows were changed, then the ID must not exist, so 404
       return res.status(404).end();
     }
-    connection.query("SELECT * FROM plans", function (err, result) {
+    connection.query("SELECT * FROM burgers", function (err, result) {
     if (err) {
       return res.status(500).end();
   
     }
-    res.render("index", { plans: result });
+    res.render("index", { burgers: result });
     })
 
   });

@@ -18,14 +18,14 @@ CREATE DATABASE burgers_db;
 
 USE burgers_db;
 
--- Create the table plans.
-CREATE TABLE plans (
+-- Create the table burgers.
+CREATE TABLE burgers (
   id int NOT NULL AUTO_INCREMENT,
-  plan varchar(255) NOT NULL,
+  burger varchar(255) NOT NULL,
   devoured BOOLEAN DEFAULT false,
 
   PRIMARY KEY (id)
 );
 
 -- Insert a set of records.
-INSERT INTO plans (plan) VALUES ('Plain');
+INSERT INTO burgers (burger) VALUES ('Plain');
